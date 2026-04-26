@@ -1,0 +1,6 @@
+ID,vendorName,vendorType,country,city,category,contactPerson,contactEmail,contactPhone,taxId,vatNumber,registrationNumber,taxCountry,status,reviewerComment,requestedBy,reviewedBy,reviewedAt
+10000000-0000-0000-0000-000000000001,Apex Industries Inc,Supplier,USA,New York,Raw Materials,John Carter,j.carter@apex.com,+1-212-5550100,US-TAX-001,,,USA,New,,,alice@company.com,,
+10000000-0000-0000-0000-000000000002,Pacific Freight Solutions,Service Provider,USA,Los Angeles,Logistics,Sarah Mitchell,s.mitchell@pacfreight.com,+1-310-5550101,US-TAX-002,,,USA,Approved,All documents verified,bob@company.com,reviewer1@company.com,2024-03-15T10:00:00Z
+10000000-0000-0000-0000-000000000003,Great Lakes Parts Co,Supplier,USA,Chicago,Electronics,Tom Novak,t.novak@greatlakes.com,+1-312-5550102,US-TAX-003,,,USA,In Review,Awaiting tax certificate,carol@company.com,,
+10000000-0000-0000-0000-000000000004,Lone Star Commodities,Supplier,USA,Houston,Raw Materials,Maria Reyes,m.reyes@lonestar.com,+1-713-5550103,US-TAX-004,,,USA,Rejected,Incomplete registration docs,dave@company.com,reviewer2@company.com,2024-03-20T14:30:00Z
+10000000-0000-0000-0000-000000000005,Bayview Consulting LLC,Consultant,USA,San Francisco,Consulting,James Liu,j.liu@bayviewcons.com,+1-415-5550104,US-TAX-005,,,USA,New,,,eve@company.com,,
