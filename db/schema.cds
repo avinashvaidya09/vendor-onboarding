@@ -2,6 +2,13 @@ namespace vendoronboarding;
 
 using { cuid, managed } from '@sap/cds/common';
 
+type VendorStatus : String enum {
+  NEW;
+  APPROVED;
+  REJECTED;
+  ADMIN_REVIEW;
+}
+
 entity VendorRequests : cuid, managed {
   vendorName         : String(100);
   vendorType         : String(50);
@@ -15,7 +22,7 @@ entity VendorRequests : cuid, managed {
   vatNumber          : String(50);
   registrationNumber : String(50);
   taxCountry         : String(50);
-  status             : String(20) default 'New';
+  status             : VendorStatus default 'NEW';
   reviewerComment    : String(500);
   requestedBy        : String(100);
   reviewedBy         : String(100);
