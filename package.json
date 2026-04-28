@@ -12,7 +12,8 @@
   },
   "scripts": {
     "start": "cds-serve",
-    "watch-vendor-requests": "cds watch --open vendorrequests/index.html?sap-ui-xx-viewCache=false --livereload false"
+    "watch-vendor-requests": "cds watch --open vendorrequests/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "start:router": "npm start --workspace=app/router"
   },
   "cds": {
     "[development]": {

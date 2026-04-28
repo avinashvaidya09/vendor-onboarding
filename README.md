@@ -22,19 +22,31 @@ A simple Vendor Request management app where:
 | `srv/vendor-service.js` | CAP handlers — before CREATE, after READ, approve, reject |
 | `app/vendor-requests/annotations.cds` | All Fiori Elements UI annotations (separate from srv layer) |
 | `app/vendor-requests/webapp/` | Fiori Elements app (List Report + Object Page) |
-| `db/data/` | CSV seed data auto-loaded by `cds watch` |
+| `app/router/xs-app.json` | App Router routing rules |
+| `app/router/default-env.json` | Local destination config (git-ignored) |
+| `app/router/package.json` | App Router dependency and start script |
 | `package.json` | Project config including mock auth for development |
 
 ---
 
 ## Running Locally
 
+### Without App Router (direct CAP)
 ```bash
 npm install
 cds watch
 ```
-
 Open: `http://localhost:4004/vendor-requests/webapp/index.html`
+
+### With App Router
+```bash
+# Terminal 1 — CAP backend
+cds watch
+
+# Terminal 2 — App Router
+npm run start:router
+```
+Open: `http://localhost:5001`
 
 Login with mock users:
 | User | Password | Role |
@@ -84,9 +96,17 @@ Login with mock users:
 - `@Capabilities.DeleteRestrictions: { Deletable: isReviewer }` — disables Delete for non-reviewers
 - Review fields (`status`, `reviewedBy`, `reviewedAt`, `reviewerComment`) marked `@readonly` — non-editable in the form
 
----
+### 7. Standalone App Router
+- Added via `cds add approuter` — generates `app/router/` with `xs-app.json`, `default-env.json`, `package.json`
+- **Key learning:** With npm workspaces, `@sap/approuter` is hoisted to root `node_modules/` — the start script must use `../../node_modules/@sap/approuter/approuter.js`
+- `xs-app.json` has a single catch-all route forwarding all traffic to `srv-api` destination (CAP at `:4004`)
+- `authenticationMethod: "none"` — App Router is a pure routing layer for now; CAP mock auth still handles login
+- `forwardAuthToken: false` in `default-env.json` — no IAS token to forward at this stage
+- `default-env.json` is git-ignored (`default-*.json` pattern in `.gitignore`) — never committed or deployed
+- App Router runs on port `5001` (configured via `PORT=5001` in start script)
+- **When IAS is added:** `authenticationMethod` changes to `route`, `authenticationType` per route changes to `ias`, and `forwardAuthToken` becomes `true`
 
-## Key Learnings
+---
 
 | Topic | Learning |
 |---|---|
@@ -98,7 +118,8 @@ Login with mock users:
 | Virtual fields | Use `virtual` for computed non-persisted fields; populate in `after('READ')` |
 | Role-based UI | `@Core.OperationAvailable` + virtual field is the pattern for dynamic button state |
 | Layer separation | UI annotations belong in `app/`, not `srv/` |
-| Mock auth profile | Use `[development]` profile to scope mock config away from production |
+| App Router npm workspaces | With workspaces, packages are hoisted to root — start script must reference `../../node_modules/` |
+| App Router for now | `authenticationMethod: none` makes it a pure proxy; auth layer added when IAS arrives |
 
 ---
 
@@ -108,7 +129,7 @@ Login with mock users:
 |---|---|
 | Phase 1: Basic CAP app + OData | Done |
 | Phase 2: Fiori Elements UI + Actions | Done |
-| Phase 3: Standalone App Router | Pending |
+| Phase 3: Standalone App Router | Done |
 | Phase 4: MTA deployment descriptor | Pending |
 | Phase 5: IAS authentication | Pending |
 | Phase 6: AMS authorization policies | Pending |
