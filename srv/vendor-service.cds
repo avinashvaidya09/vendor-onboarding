@@ -11,8 +11,8 @@ service VendorService {
       else                     0
     end as statusCriticality : Integer
   } actions {
-    action approve();
-    action reject();
+    action approveRequest(comment : String(500)) returns VendorRequests;
+    action rejectRequest(comment  : String(500)) returns VendorRequests;
   };
 }
 
@@ -26,9 +26,17 @@ annotate VendorService.VendorRequests with {
 
 annotate VendorService.VendorRequests with @(
 
-  UI.Identification: [
-    { $Type: 'UI.DataFieldForAction', Action: 'VendorService.VendorRequests/approve', Label: 'Approve' },
-    { $Type: 'UI.DataFieldForAction', Action: 'VendorService.VendorRequests/reject',  Label: 'Reject'  }
+ UI.Identification: [
+    {
+      $Type  : 'UI.DataFieldForAction',
+      Action : 'VendorService.approveRequest',
+      Label  : 'Approve'
+    },
+    {
+      $Type  : 'UI.DataFieldForAction',
+      Action : 'VendorService.rejectRequest',
+      Label  : 'Reject'
+    }
   ],
 
   UI.HeaderInfo: {
@@ -41,6 +49,8 @@ annotate VendorService.VendorRequests with @(
   UI.SelectionFields: [ status, country ],
 
   UI.LineItem: [
+    { $Type: 'UI.DataFieldForAction', Action: 'VendorService.approveRequest', Label: 'Approve' },
+    { $Type: 'UI.DataFieldForAction', Action: 'VendorService.rejectRequest',  Label: 'Reject'  },
     { Value: vendorName,   Label: 'Vendor Name'   },
     { Value: vendorType,   Label: 'Vendor Type'   },
     { Value: country,      Label: 'Country'       },

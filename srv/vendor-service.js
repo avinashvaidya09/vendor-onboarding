@@ -4,8 +4,7 @@ module.exports = class VendorService extends cds.ApplicationService {
   async init() {
     const { VendorRequests } = this.entities;
 
-    this.on('approve', VendorRequests, async (req) => {
-      console.log('[approve] called', req.params, req.data);
+    this.on('approveRequest', VendorRequests, async (req) => {
       const id = req.params[0].ID;
       const { comment } = req.data;
 
@@ -20,9 +19,10 @@ module.exports = class VendorService extends cds.ApplicationService {
         reviewedBy      : req.user.id,
         reviewedAt      : new Date()
       });
+      return SELECT.one(VendorRequests, id);
     });
 
-    this.on('reject', VendorRequests, async (req) => {
+    this.on('rejectRequest', VendorRequests, async (req) => {
       const id = req.params[0].ID;
       const { comment } = req.data;
 
@@ -37,6 +37,7 @@ module.exports = class VendorService extends cds.ApplicationService {
         reviewedBy      : req.user.id,
         reviewedAt      : new Date()
       });
+      return SELECT.one(VendorRequests, id);
     });
 
     return super.init();
