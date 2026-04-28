@@ -2,6 +2,7 @@ using { vendoronboarding as db } from '../db/schema';
 
 @path: 'vendor-service'
 service VendorService {
+  @odata.draft.enabled
   entity VendorRequests as projection on db.VendorRequests {
     *,
     case status
