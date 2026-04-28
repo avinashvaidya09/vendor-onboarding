@@ -4,6 +4,11 @@ module.exports = class VendorService extends cds.ApplicationService {
   async init() {
     const { VendorRequests } = this.entities;
 
+    this.before('CREATE', VendorRequests, (req) => {
+      req.data.status      = 'ADMIN_REVIEW';
+      req.data.requestedBy = req.user.id;
+    });
+
     this.on('approveRequest', VendorRequests, async (req) => {
       const id = req.params[0].ID;
       const { comment } = req.data;
