@@ -1,5 +1,7 @@
 # CAP vendor-onboarding
 _out
+app/router/resources/
+app/vendor-requests/dist/
 *.db
 *.sqlite
 connection.properties

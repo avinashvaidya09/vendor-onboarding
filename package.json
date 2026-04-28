@@ -1,19 +1,24 @@
 {
   "name": "vendor-onboarding",
   "version": "1.0.0",
-  "description": "A simple CAP project.",
+  "description": "A CAP project.",
   "dependencies": {
+    "@cap-js/hana": "^2",
     "@sap/cds": "^9",
     "express": "^4"
   },
   "devDependencies": {
     "@cap-js/sqlite": "^2",
+    "@sap/cds-dk": "^9",
+    "@ui5/cli": "^4.0.33",
     "cds-plugin-ui5": "^0.13.0"
   },
   "scripts": {
     "start": "cds-serve",
     "watch-vendor-requests": "cds watch --open vendorrequests/index.html?sap-ui-xx-viewCache=false --livereload false",
-    "start:router": "npm start --workspace=app/router"
+    "start:router": "npm start --workspace=app/router",
+    "build:ui": "npm run build --workspace=app/vendor-requests",
+    "copy:ui": "rm -rf app/router/resources/vendor-requests && mkdir -p app/router/resources/vendor-requests && cp -R app/vendor-requests/dist/. app/router/resources/vendor-requests/"
   },
   "cds": {
     "[development]": {
@@ -21,9 +26,26 @@
         "auth": {
           "kind": "mocked",
           "users": {
-            "alice": { "password": "alice", "roles": ["VendorRequester"] },
-            "bob":   { "password": "bob",   "roles": ["VendorReviewer"]  }
+            "alice": {
+              "password": "alice",
+              "roles": [
+                "VendorRequester"
+              ]
+            },
+            "bob": {
+              "password": "bob",
+              "roles": [
+                "VendorReviewer"
+              ]
+            }
           }
+        }
+      }
+    },
+    "[production]": {
+      "requires": {
+        "db": {
+          "kind": "hana"
         }
       }
     }

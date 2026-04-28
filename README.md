@@ -22,10 +22,11 @@ A simple Vendor Request management app where:
 | `srv/vendor-service.js` | CAP handlers — before CREATE, after READ, approve, reject |
 | `app/vendor-requests/annotations.cds` | All Fiori Elements UI annotations (separate from srv layer) |
 | `app/vendor-requests/webapp/` | Fiori Elements app (List Report + Object Page) |
-| `app/router/xs-app.json` | App Router routing rules |
+| `app/router/xs-app.json` | App Router routing rules — localDir for UI, odata route for CAP |
 | `app/router/default-env.json` | Local destination config (git-ignored) |
 | `app/router/package.json` | App Router dependency and start script |
-| `package.json` | Project config including mock auth for development |
+| `mta.yaml` | MTA deployment descriptor — srv, approuter, db-deployer modules |
+| `package.json` | Project config including mock auth, build:ui and copy:ui scripts |
 
 ---
 
@@ -108,6 +109,21 @@ Login with mock users:
 
 ---
 
+### 8. MTA Deployment Descriptor
+- `mta.yaml` generated via `cds add mta` — three modules: `vendor-onboarding-srv` (CAP), `vendor-onboarding` (App Router), `vendor-onboarding-db-deployer` (HANA HDI)
+- HANA HDI container resource added via `cds add hana`; `[production]` db config added manually to `package.json`
+- **UI deployment without HTML5 Repository:** Fiori app is bundled into the App Router directly
+  - `npm run build:ui` — runs `ui5 build` in `app/vendor-requests/`, outputs to `dist/`
+  - `npm run copy:ui` — copies `dist/` contents into `app/router/resources/vendor-requests/`
+  - Both run automatically in `mta.yaml` `before-all` before `cds build --production`
+- `app/router/xs-app.json` has two explicit routes:
+  - `^/vendor-requests/(.*)$` → `localDir: resources` (static UI files)
+  - `^/odata/(.*)$` → `srv-api` destination (CAP OData service)
+- `app/router/resources/` and `app/vendor-requests/dist/` are git-ignored (build artifacts)
+- **Key learning:** `@ui5/cli` must be in root `devDependencies` — npm workspaces hoists packages to root, and the UI5 CLI resolves its own module from the working directory upward
+
+---
+
 | Topic | Learning |
 |---|---|
 | CDS enums | `type VendorStatus : String enum { ... }` — advisory at CDS level, not DB enforced |
@@ -120,6 +136,9 @@ Login with mock users:
 | Layer separation | UI annotations belong in `app/`, not `srv/` |
 | App Router npm workspaces | With workspaces, packages are hoisted to root — start script must reference `../../node_modules/` |
 | App Router for now | `authenticationMethod: none` makes it a pure proxy; auth layer added when IAS arrives |
+| MTA UI deployment | No HTML5 repo needed — bundle Fiori app into App Router via `ui5 build` + `copy:ui` script |
+| App Router routes | Two explicit routes: `localDir` for static UI, specific `/odata/` for CAP — no catch-all |
+| UI5 CLI hoisting | `@ui5/cli` must be in root `devDependencies` when using npm workspaces |
 
 ---
 
@@ -130,7 +149,7 @@ Login with mock users:
 | Phase 1: Basic CAP app + OData | Done |
 | Phase 2: Fiori Elements UI + Actions | Done |
 | Phase 3: Standalone App Router | Done |
-| Phase 4: MTA deployment descriptor | Pending |
+| Phase 4: MTA deployment descriptor | Done |
 | Phase 5: IAS authentication | Pending |
 | Phase 6: AMS authorization policies | Pending |
 | Phase 7: Deploy to BTP Cloud Foundry | Pending |

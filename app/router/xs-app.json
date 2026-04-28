@@ -1,10 +1,15 @@
 {
-  "welcomeFile": "/vendor-requests/webapp/index.html",
+  "welcomeFile": "/vendor-requests/index.html",
   "authenticationMethod": "none",
   "routes": [
     {
-      "source": "^/(.*)$",
-      "target": "$1",
+      "source": "^/vendor-requests/(.*)$",
+      "target": "vendor-requests/$1",
+      "localDir": "resources"
+    },
+    {
+      "source": "^/odata/(.*)$",
+      "target": "/odata/$1",
       "destination": "srv-api",
       "csrfProtection": true
     }
