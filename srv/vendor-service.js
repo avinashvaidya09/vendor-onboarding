@@ -12,8 +12,12 @@ module.exports = class VendorService extends cds.ApplicationService {
     this.after('READ', VendorRequests, (results, req) => {
       const entries = Array.isArray(results) ? results : [results];
       const isReviewer = req.user.is('VendorReviewer');
+      const criticality = { APPROVED: 3, REJECTED: 1, ADMIN_REVIEW: 2 };
       for (const entry of entries) {
-        if (entry) entry.isReviewer = isReviewer;
+        if (entry) {
+          entry.isReviewer        = isReviewer;
+          entry.statusCriticality = criticality[entry.status] ?? 0;
+        }
       }
     });
 

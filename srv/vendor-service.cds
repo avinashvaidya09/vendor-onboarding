@@ -6,12 +6,7 @@ service VendorService {
   @odata.draft.enabled
   entity VendorRequests as projection on db.VendorRequests {
     *,
-    case status
-      when 'APPROVED'     then 3
-      when 'REJECTED'     then 1
-      when 'ADMIN_REVIEW' then 2
-      else                     0
-    end as statusCriticality : Integer,
+    virtual statusCriticality : Integer,
     virtual isReviewer        : Boolean
   } actions {
     @restrict: [{ grant: 'INVOKE', to: 'VendorReviewer' }]

@@ -5,6 +5,7 @@
   "dependencies": {
     "@cap-js/hana": "^2",
     "@sap/cds": "^9",
+    "@sap/xssec": "^3",
     "express": "^4"
   },
   "devDependencies": {
@@ -16,7 +17,7 @@
   "scripts": {
     "start": "cds-serve",
     "watch-vendor-requests": "cds watch --open vendorrequests/index.html?sap-ui-xx-viewCache=false --livereload false",
-    "start:router": "npm start --workspace=app/router",
+    "start:router": "npm run start:local --workspace=app/router",
     "build:ui": "npm run build --workspace=app/vendor-requests",
     "copy:ui": "rm -rf app/router/resources/vendor-requests && mkdir -p app/router/resources/vendor-requests && cp -R app/vendor-requests/dist/. app/router/resources/vendor-requests/"
   },
@@ -46,6 +47,9 @@
       "requires": {
         "db": {
           "kind": "hana"
+        },
+        "auth": {
+          "kind": "dummy"
         }
       }
     }
