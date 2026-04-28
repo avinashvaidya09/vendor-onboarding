@@ -10,8 +10,11 @@ module.exports = class VendorService extends cds.ApplicationService {
     });
 
     this.after('READ', VendorRequests, (results, req) => {
+      const entries = Array.isArray(results) ? results : [results];
       const isReviewer = req.user.is('VendorReviewer');
-      [results].flat().forEach(r => r.isReviewer = isReviewer);
+      for (const entry of entries) {
+        if (entry) entry.isReviewer = isReviewer;
+      }
     });
 
     this.on('approveRequest', VendorRequests, async (req) => {
