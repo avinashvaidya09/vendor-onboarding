@@ -14,6 +14,19 @@
     "start": "cds-serve",
     "watch-vendor-requests": "cds watch --open vendorrequests/index.html?sap-ui-xx-viewCache=false --livereload false"
   },
+  "cds": {
+    "[development]": {
+      "requires": {
+        "auth": {
+          "kind": "mocked",
+          "users": {
+            "alice": { "password": "alice", "roles": ["VendorRequester"] },
+            "bob":   { "password": "bob",   "roles": ["VendorReviewer"]  }
+          }
+        }
+      }
+    }
+  },
   "private": true,
   "workspaces": [
     "app/*"

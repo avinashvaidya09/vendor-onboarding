@@ -9,6 +9,11 @@ module.exports = class VendorService extends cds.ApplicationService {
       req.data.requestedBy = req.user.id;
     });
 
+    this.after('READ', VendorRequests, (results, req) => {
+      const isReviewer = req.user.is('VendorReviewer');
+      [results].flat().forEach(r => r.isReviewer = isReviewer);
+    });
+
     this.on('approveRequest', VendorRequests, async (req) => {
       const id = req.params[0].ID;
       const { comment } = req.data;

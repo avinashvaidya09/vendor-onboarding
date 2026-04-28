@@ -1,5 +1,9 @@
 using VendorService as service from '../../srv/vendor-service';
 
+annotate service.VendorRequests with {
+  isReviewer @UI.Hidden;
+};
+
 annotate service.VendorRequests with @(
 
   UI.Identification: [
