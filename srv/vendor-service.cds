@@ -4,6 +4,10 @@ using { vendoronboarding as db } from '../db/schema';
 @requires: 'authenticated-user'
 service VendorService {
   @odata.draft.enabled
+  @restrict: [
+    { grant: ['READ', 'CREATE'], to: 'VendorRequester' },
+    { grant: '*', to: 'VendorReviewer' }
+  ]
   entity VendorRequests as projection on db.VendorRequests {
     *,
     virtual statusCriticality : Integer,

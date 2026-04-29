@@ -1,16 +1,18 @@
 {
   "welcomeFile": "/vendor-requests/index.html",
-  "authenticationMethod": "none",
+  "authenticationMethod": "route",
   "routes": [
     {
       "source": "^/vendor-requests/(.*)$",
       "target": "vendor-requests/$1",
-      "localDir": "resources"
+      "localDir": "resources",
+      "authenticationType": "ias"
     },
     {
       "source": "^/odata/(.*)$",
       "target": "/odata/$1",
       "destination": "srv-api",
+      "authenticationType": "ias",
       "csrfProtection": true
     }
   ]
