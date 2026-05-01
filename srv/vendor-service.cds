@@ -4,6 +4,11 @@ using { vendoronboarding as db } from '../db/schema';
 @requires: 'authenticated-user'
 service VendorService {
   @odata.draft.enabled
+  @restrict: [
+    { grant: ['READ', 'CREATE'], to: 'VendorRequester', where: 'requestedBy = $user' },
+    { grant: ['READ', 'UPDATE', 'DELETE'], to: 'VendorReviewer' }
+  ]
+  @ams.attributes: { country: (country) }
   entity VendorRequests as projection on db.VendorRequests {
     *,
     virtual statusCriticality : Integer,
@@ -17,6 +22,8 @@ service VendorService {
     @Core.OperationAvailable: isReviewer
     action rejectRequest(comment  : String(500)) returns VendorRequests;
   };
+
+  function getCurrentUserInfo() returns { isReviewer: Boolean; isRequester: Boolean; };
 }
 
 annotate VendorService.VendorRequests with {

@@ -11,7 +11,7 @@ module.exports = class VendorService extends cds.ApplicationService {
 
     this.after('READ', VendorRequests, (results, req) => {
       const entries = Array.isArray(results) ? results : [results];
-      const isReviewer = req.user.is('VendorReviewer');
+      const isReviewer  = req.user.is('VendorReviewer');
       const criticality = { APPROVED: 3, REJECTED: 1, ADMIN_REVIEW: 2 };
       for (const entry of entries) {
         if (entry) {
@@ -56,6 +56,11 @@ module.exports = class VendorService extends cds.ApplicationService {
       });
       return SELECT.one(VendorRequests, id);
     });
+
+    this.on('getCurrentUserInfo', req => ({
+      isReviewer:  req.user.is('VendorReviewer'),
+      isRequester: req.user.is('VendorRequester')
+    }));
 
     return super.init();
   }

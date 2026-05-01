@@ -19,14 +19,27 @@ modules:
     parameters:
       instances: 1
       buildpack: nodejs_buildpack
+      routes:
+        - route: "${default-url}"
+        - route: "${default-host}.cert.${default-domain}"
     build-parameters:
       builder: npm-ci
     provides:
       - name: srv-api # required by consumers of CAP services (e.g. approuter)
         properties:
           srv-url: ${default-url}
+          srv-cert-url: '${protocol}://${default-host}.cert.${default-domain}'
     requires:
       - name: vendor-onboarding-db
+      - name: vendor-onboarding-ias
+        parameters:
+          config:
+            credential-type: X509_GENERATED
+            app-identifier: srv
+    deployed-after:
+      - vendor-onboarding-ams-policies-deployer
+    properties:
+      AMS_DCL_ROOT: ams/dcl
   - name: vendor-onboarding
     type: approuter.nodejs
     path: app/router
@@ -39,8 +52,15 @@ modules:
         group: destinations
         properties:
           name: srv-api # must be used in xs-app.json as well
-          url: ~{srv-url}
+          url: ~{srv-cert-url}
           forwardAuthToken: true
+          forwardAuthCertificates: true
+          strictSSL: true
+      - name: vendor-onboarding-ias
+        parameters:
+          config:
+            credential-type: X509_GENERATED
+            app-identifier: approuter
     provides:
       - name: app-api
         properties:
@@ -55,9 +75,51 @@ modules:
     requires:
       - name: vendor-onboarding-db
 
+  - name: vendor-onboarding-ams-policies-deployer
+    type: javascript.nodejs
+    path: gen/policies
+    parameters:
+      buildpack: nodejs_buildpack
+      no-route: true
+      no-start: true
+      tasks:
+        - name: deploy-dcl
+          command: npm start
+          memory: 512M
+    requires:
+      - name: vendor-onboarding-ias
+        parameters:
+          config:
+            credential-type: X509_GENERATED
+            app-identifier: ams-policy-deployer
+
 resources:
   - name: vendor-onboarding-db
     type: com.sap.xs.hdi-container
     parameters:
       service: hana
       service-plan: hdi-shared
+  - name: vendor-onboarding-ias
+    type: org.cloudfoundry.managed-service
+    requires:
+      - name: app-api
+    parameters:
+      service: identity
+      service-name: vendor-onboarding-ias
+      service-plan: application
+      config:
+        provided-apis:
+          - name: vendor-onboarding-ias-api
+            description: API exposed by the application
+        display-name: vendor-onboarding
+        oauth2-configuration:
+          token-policy:
+            access-token-format: "jwt"
+          redirect-uris:
+            - ~{app-api/app-protocol}://*.~{app-api/app-uri}/login/callback
+            - ~{app-api/app-protocol}://~{app-api/app-uri}/login/callback
+          post-logout-redirect-uris:
+            - ~{app-api/app-protocol}://*.~{app-api/app-uri}/*/logout.html
+        authorization:
+          enabled: true
+        xsuaa-cross-consumption: true

@@ -4,12 +4,14 @@
   "description": "A CAP project.",
   "dependencies": {
     "@cap-js/hana": "^2",
+    "@sap/ams": "^3",
     "@sap/cds": "^9",
-    "@sap/xssec": "^3",
+    "@sap/xssec": "^4",
     "express": "^4"
   },
   "devDependencies": {
     "@cap-js/sqlite": "^2",
+    "@sap/ams-dev": "^2",
     "@sap/cds-dk": "^9",
     "@ui5/cli": "^4.0.33",
     "cds-plugin-ui5": "^0.13.0"
@@ -48,9 +50,7 @@
         "db": {
           "kind": "hana"
         },
-        "auth": {
-          "kind": "dummy"
-        }
+        "auth": "ias"
       }
     }
   },
