@@ -5,9 +5,10 @@ using { vendoronboarding as db } from '../db/schema';
 service VendorService {
   @odata.draft.enabled
   @restrict: [
-    { grant: ['READ', 'CREATE'], to: 'VendorRequester' },
-    { grant: '*', to: 'VendorReviewer' }
+    { grant: ['READ', 'CREATE'], to: 'VendorRequester', where: 'requestedBy = $user' },
+    { grant: ['READ', 'UPDATE', 'DELETE'], to: 'VendorReviewer' }
   ]
+  @ams.attributes: { country: (country) }
   entity VendorRequests as projection on db.VendorRequests {
     *,
     virtual statusCriticality : Integer,

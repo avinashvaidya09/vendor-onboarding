@@ -1,8 +1,8 @@
 // ---------------------------------HEADER_START-----------------------------------------------
 // Generated from a CAP model by the SAP AMS Plugin (@sap/ams) 3.6.0
-// hash of generated content: e67b4360fb6755d6b9cf24b718b7b700ca41b67c734651927939cb4d734f86b2
+// hash of generated content: fd880814d2fcd7eb36daca447f8ae52f5eec078b7b331f744dbb8cfb65e54757
 // ----------------------------------HEADER_END------------------------------------------------
 
 SCHEMA {
-
+	country: String
 }
