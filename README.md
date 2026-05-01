@@ -322,6 +322,10 @@ override: {
 | Lifecycle hook | Use `onAfterRendering` — button does not exist at `onInit` time |
 
 ---
+
+## Key Learnings
+
+| Topic | Learning |
 |---|---|
 | CDS enums | `type VendorStatus : String enum { ... }` — advisory at CDS level, not DB enforced |
 | Bound action naming | Avoid CAP reserved names (`reject`, `create`, etc.) |
