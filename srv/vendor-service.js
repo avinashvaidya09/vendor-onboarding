@@ -57,6 +57,11 @@ module.exports = class VendorService extends cds.ApplicationService {
       return SELECT.one(VendorRequests, id);
     });
 
+    this.on('getCurrentUserInfo', req => ({
+      isReviewer:  req.user.is('VendorReviewer'),
+      isRequester: req.user.is('VendorRequester')
+    }));
+
     return super.init();
   }
 };

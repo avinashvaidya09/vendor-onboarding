@@ -22,6 +22,8 @@ service VendorService {
     @Core.OperationAvailable: isReviewer
     action rejectRequest(comment  : String(500)) returns VendorRequests;
   };
+
+  function getCurrentUserInfo() returns { isReviewer: Boolean; isRequester: Boolean; };
 }
 
 annotate VendorService.VendorRequests with {
