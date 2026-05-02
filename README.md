@@ -1,6 +1,6 @@
-# Vendor Onboarding — CAP Learning Project
+# Vendor Onboarding — CAP Project
 
-A hands-on project to learn SAP CAP development, Fiori Elements UI patterns, and (later) IAS + AMS authorization.
+A hands-on project for learning SAP CAP development with IAS + AMS authorization. It explores how modern BTP applications move beyond XSUAA to using IAS for identity, AMS for instance-based policy authorization. This also showcases how CDS annotations drive both backend enforcement and Fiori Elements UI behaviour.
 
 ---
 
