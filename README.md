@@ -45,6 +45,8 @@ A simple Vendor Request management app where:
 - **Reviewers** approve or reject requests with comments
 - Role-based visibility: action buttons are disabled for non-reviewers
 
+![BTP Solution Diagram](BTP_Solution_Diagram.drawio.png)
+
 ---
 
 ## Project Structure
