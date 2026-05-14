@@ -4,6 +4,27 @@ A hands-on project for learning SAP CAP development with IAS + AMS authorization
 
 ---
 
+## Table of Contents
+
+- [What This Project Does](#what-this-project-does)
+- [Project Structure](#project-structure)
+- [Running Locally](#running-locally)
+- [What Was Built — Step by Step](#what-was-built--step-by-step)
+  - [1. CAP Project Scaffold](#1-cap-project-scaffold)
+  - [2. OData Service](#2-odata-service)
+  - [3. Fiori Elements UI](#3-fiori-elements-ui)
+  - [4. Approve / Reject Actions](#4-approve--reject-actions)
+  - [5. Mock Authentication and Role-Based Authorization](#4-mock-authentication-and-role-based-authorization)
+  - [6. Standalone App Router](#7-standalone-app-router)
+  - [7. MTA Deployment Descriptor](#8-mta-deployment-descriptor)
+  - [8. IAS Authentication](#9-ias-authentication)
+  - [9. AMS Authorization Policies](#10-ams-authorization-policies)
+  - [10. Hiding the Create Button for VendorReviewers](#11-hiding-the-create-button-for-vendorreviewers)
+- [Key Learnings](#key-learnings)
+- [Roadmap](#roadmap)
+
+---
+
 ## What This Project Does
 
 A simple Vendor Request management app where:
