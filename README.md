@@ -378,6 +378,5 @@ override: {
 | DCL file placement | Files must be in a package subfolder — root-level DCL files are rejected by the deployer |
 | AMS instance policies | `ASSIGN ROLE "X" WHERE attribute = 'value'` restricts which records a role applies to |
 | AMS + `@ams.attributes` | Annotate the entity with `@ams.attributes: { field: (field) }` to expose fields as AMS schema attributes |
-| AMS metadata | With AMS auth, `$metadata` is static — per-user capabilities are not auto-computed |
 
 ---
