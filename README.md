@@ -2,10 +2,22 @@
 
 A hands-on project for learning SAP CAP development with IAS + AMS authorization. It explores how modern BTP applications move beyond XSUAA to using IAS for identity, AMS for instance-based policy authorization. This also showcases how CDS annotations drive both backend enforcement and Fiori Elements UI behaviour.
 
+## Roadmap
+
+| Phase |
+|---|
+| Phase 1: Basic CAP app + OData |
+| Phase 2: Fiori Elements UI + Actions |
+| Phase 3: Standalone App Router |
+| Phase 4: MTA deployment descriptor |
+| Phase 5: IAS + AMS authentication and authorization |
+| Phase 6: Deploy to BTP Cloud Foundry |
+
 ---
 
 ## Table of Contents
 
+- [Roadmap](#roadmap)
 - [What This Project Does](#what-this-project-does)
 - [Project Structure](#project-structure)
 - [Running Locally](#running-locally)
@@ -23,7 +35,6 @@ A hands-on project for learning SAP CAP development with IAS + AMS authorization
   - [11. Testing Authorization in BTP](#12-testing-authorization-in-btp)
   - [12. Hiding the Create Button for VendorReviewers](#13-hiding-the-create-button-for-vendorreviewers)
 - [Key Learnings](#key-learnings)
-- [Roadmap](#roadmap)
 
 ---
 
@@ -370,14 +381,3 @@ override: {
 | AMS metadata | With AMS auth, `$metadata` is static — per-user capabilities are not auto-computed |
 
 ---
-
-## Roadmap
-
-| Phase | Status |
-|---|---|
-| Phase 1: Basic CAP app + OData | Done |
-| Phase 2: Fiori Elements UI + Actions | Done |
-| Phase 3: Standalone App Router | Done |
-| Phase 4: MTA deployment descriptor | Done |
-| Phase 5: IAS + AMS authentication and authorization | Done |
-| Phase 6: Deploy to BTP Cloud Foundry | Done |
