@@ -4,6 +4,15 @@ annotate service.VendorRequests with {
   isReviewer @UI.Hidden;
 };
 
+annotate service.VendorRequests actions {
+  approveRequest @Common.SideEffects: {
+    TargetProperties: ['status', 'reviewerComment', 'reviewedBy', 'reviewedAt', 'statusCriticality']
+  };
+  rejectRequest @Common.SideEffects: {
+    TargetProperties: ['status', 'reviewerComment', 'reviewedBy', 'reviewedAt', 'statusCriticality']
+  };
+};
+
 annotate service.VendorRequests with @(
 
   UI.Identification: [
