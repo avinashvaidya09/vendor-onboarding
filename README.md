@@ -218,6 +218,45 @@ POLICY "VendorReviewer_CA" {
 }
 ```
 
+#### `ASSIGN ROLE` vs `GRANT` — when to use which
+
+AMS DCL offers two ways to authorize users. Understanding the difference is key to choosing the right model.
+
+**`ASSIGN ROLE`** assigns a named role to whoever holds the policy. CAP picks up the role from the AMS-enriched token and makes it available via `req.user.is('RoleName')`. The application code and annotations (`@restrict`, `@Core.OperationAvailable`, virtual fields) drive both backend enforcement and UI behaviour.
+
+**`GRANT`** bypasses roles entirely. AMS directly permits specific operations on specific resource instances. The application code has no role to inspect — authorization is fully owned by AMS.
+
+A pure `GRANT`-based version of the reviewer policies would look like:
+
+```dcl
+POLICY "VendorReviewer_US" {
+  GRANT READ, DELETE ON VendorService.VendorRequests WHERE country = 'US';
+  GRANT INVOKE ON VendorService.VendorRequests:approveRequest WHERE country = 'US';
+  GRANT INVOKE ON VendorService.VendorRequests:rejectRequest  WHERE country = 'US';
+}
+```
+
+This is more powerful and more aligned with AMS's design intent — but it breaks everything that depends on `req.user.is('VendorReviewer')`: the `isReviewer` virtual field, `@Core.OperationAvailable`, `@Capabilities.DeleteRestrictions`, and the List Report extension. The UI has no way to know the user is a reviewer.
+
+The practical hybrid: keep `ASSIGN ROLE` for UI-driving role checks, add `GRANT` for fine-grained instance enforcement on top:
+
+```dcl
+POLICY "VendorReviewer_US" {
+  ASSIGN ROLE "VendorReviewer";                                                 - UI still works
+  GRANT READ, DELETE ON VendorService.VendorRequests WHERE country = 'US';      - AMS enforces instances
+  GRANT INVOKE ON VendorService.VendorRequests:approveRequest WHERE country = 'US';
+  GRANT INVOKE ON VendorService.VendorRequests:rejectRequest  WHERE country = 'US';
+}
+```
+
+| | `ASSIGN ROLE` | `GRANT` |
+|---|---|---|
+| Who enforces? | CAP (`@restrict`, `req.user.is()`) | AMS directly |
+| UI integration | Works — `req.user.is()` returns `true` | Breaks — no role on the token |
+| Instance filtering | Via `WHERE` on ASSIGN | Via `WHERE` on GRANT |
+| Closest analogy | XSUAA role collections | Database ACLs |
+| When to prefer | CAP-centric apps, UI needs role info | AMS as sole auth layer, multi-service policies |
+
 #### Testing authorization in BTP
 
 After deploying, assign policies to users in the IAS admin console:
