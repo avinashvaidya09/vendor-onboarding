@@ -20,7 +20,8 @@ A hands-on project for learning SAP CAP development with IAS + AMS authorization
   - [8. IAS Authentication](#9-ias-authentication)
   - [9. AMS Authorization Policies](#10-ams-authorization-policies)
   - [10. ASSIGN ROLE vs GRANT — When to Use Which](#11-assign-role-vs-grant--when-to-use-which)
-  - [11. Hiding the Create Button for VendorReviewers](#12-hiding-the-create-button-for-vendorreviewers)
+  - [11. Testing Authorization in BTP](#12-testing-authorization-in-btp)
+  - [12. Hiding the Create Button for VendorReviewers](#13-hiding-the-create-button-for-vendorreviewers)
 - [Key Learnings](#key-learnings)
 - [Roadmap](#roadmap)
 
@@ -279,7 +280,7 @@ POLICY "VendorReviewer_US" {
 | Closest analogy | XSUAA role collections | Database ACLs |
 | When to prefer | CAP-centric apps, UI needs role info | AMS as sole auth layer, multi-service policies |
 
-#### Testing authorization in BTP
+### 12. Testing Authorization in BTP
 
 After deploying, assign policies to users in the IAS admin console:
 
@@ -299,7 +300,7 @@ After deploying, assign policies to users in the IAS admin console:
 
 ---
 
-### 12. Hiding the Create Button for VendorReviewers
+### 13. Hiding the Create Button for VendorReviewers
 
 The Fiori Elements Create button is a UI concern, not a backend concern — the backend already blocks CREATE for VendorReviewers via `@restrict`. The goal is a UX improvement.
 
