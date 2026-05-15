@@ -28,12 +28,12 @@ A hands-on project for learning SAP CAP development with IAS + AMS authorization
   - [4. Approve / Reject Actions](#4-approve--reject-actions)
   - [5. Mock Authentication and Role-Based Authorization](#4-mock-authentication-and-role-based-authorization)
   - [6. Standalone App Router](#7-standalone-app-router)
-  - [7. MTA Deployment Descriptor](#8-mta-deployment-descriptor)
-  - [8. IAS Authentication](#9-ias-authentication)
-  - [9. AMS Authorization Policies](#10-ams-authorization-policies)
-  - [10. ASSIGN ROLE vs GRANT — When to Use Which](#11-assign-role-vs-grant--when-to-use-which)
-  - [11. Testing Authorization in BTP](#12-testing-authorization-in-btp)
-  - [12. Hiding the Create Button for VendorReviewers](#13-hiding-the-create-button-for-vendorreviewers)
+  - [7. MTA Deployment Descriptor](#7-mta-deployment-descriptor)
+  - [8. IAS Authentication](#8-ias-authentication)
+  - [9. AMS Authorization Policies](#9-ams-authorization-policies)
+  - [10. ASSIGN ROLE vs GRANT — When to Use Which](#10-assign-role-vs-grant--when-to-use-which)
+  - [11. Testing Authorization in BTP](#11-testing-authorization-in-btp)
+  - [12. Hiding the Create Button for VendorReviewers](#12-hiding-the-create-button-for-vendorreviewers)
 - [Key Learnings](#key-learnings)
 
 ---
@@ -145,7 +145,7 @@ Login with mock users:
 
 ---
 
-### 8. MTA Deployment Descriptor
+### 7. MTA Deployment Descriptor
 - `mta.yaml` generated via `cds add mta` — three modules: `vendor-onboarding-srv` (CAP), `vendor-onboarding` (App Router), `vendor-onboarding-db-deployer` (HANA HDI)
 - HANA HDI container resource added via `cds add hana`; `[production]` db config added manually to `package.json`
 - **UI deployment without HTML5 Repository:** Fiori app is bundled into the App Router directly
@@ -159,7 +159,7 @@ Login with mock users:
 
 ---
 
-### 9. IAS Authentication
+### 8. IAS Authentication
 
 `cds add ams` was used (not `cds add ias`) because AMS depends on IAS — the command sets up both together:
 
@@ -183,7 +183,7 @@ Login with mock users:
 
 ---
 
-### 10. AMS Authorization Policies
+### 9. AMS Authorization Policies
 
 #### The `ams/` folder
 
@@ -266,7 +266,7 @@ POLICY "VendorReviewer_CA" {
 ```
 ---
 
-### 11. ASSIGN ROLE vs GRANT — When to Use Which
+### 10. ASSIGN ROLE vs GRANT — When to Use Which
 
 AMS DCL offers two ways to authorize users. Understanding the difference is key to choosing the right model.
 
@@ -307,7 +307,7 @@ POLICY "VendorReviewer_US" {
 
 ---
 
-### 12. Testing Authorization in BTP
+### 11. Testing Authorization in BTP
 
 After deploying, assign policies to users in the IAS admin console:
 
@@ -327,7 +327,7 @@ After deploying, assign policies to users in the IAS admin console:
 
 ---
 
-### 13. Hiding the Create Button for VendorReviewers
+### 12. Hiding the Create Button for VendorReviewers
 
 The Fiori Elements Create button is a UI concern, not a backend concern — the backend already blocks CREATE for VendorReviewers via `@restrict`. The goal is a UX improvement.
 
