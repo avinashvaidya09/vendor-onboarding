@@ -43,7 +43,7 @@ A hands-on project for learning SAP CAP development with IAS + AMS authorization
 A enterprise Vendor onboarding management app where:
 - **Requesters** create and view vendor onboarding requests
 - **Reviewers** approve or reject requests with comments
-- Role-based visibility: action buttons are disabled for non-reviewers
+- **Role-based visibility**: Restricting visibility of data based on AMS policies
 
 The below solution diagram showcases the main components of the application.
 
