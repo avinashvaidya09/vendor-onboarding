@@ -286,16 +286,6 @@ POLICY "VendorReviewer_US" {
 
 This is more powerful and more aligned with AMS's design intent — but it breaks everything that depends on `req.user.is('VendorReviewer')`: the `isReviewer` virtual field, `@Core.OperationAvailable`, `@Capabilities.DeleteRestrictions`, and the List Report extension. The UI has no way to know the user is a reviewer.
 
-The practical hybrid: keep `ASSIGN ROLE` for UI-driving role checks, add `GRANT` for fine-grained instance enforcement on top:
-
-```dcl
-POLICY "VendorReviewer_US" {
-  ASSIGN ROLE "VendorReviewer";                                                 - UI still works
-  GRANT READ, DELETE ON VendorService.VendorRequests WHERE country = 'US';      - AMS enforces instances
-  GRANT INVOKE ON VendorService.VendorRequests:approveRequest WHERE country = 'US';
-  GRANT INVOKE ON VendorService.VendorRequests:rejectRequest  WHERE country = 'US';
-}
-```
 
 | | `ASSIGN ROLE` | `GRANT` |
 |---|---|---|
