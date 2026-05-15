@@ -40,10 +40,12 @@ A hands-on project for learning SAP CAP development with IAS + AMS authorization
 
 ## What This Project Does
 
-A simple Vendor Request management app where:
+A enterprise Vendor onboarding management app where:
 - **Requesters** create and view vendor onboarding requests
 - **Reviewers** approve or reject requests with comments
 - Role-based visibility: action buttons are disabled for non-reviewers
+
+The below solution diagram showcases the main components of the application.
 
 ![BTP Solution Diagram](BTP_Solution_Diagram.drawio.png)
 
