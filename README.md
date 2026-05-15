@@ -106,22 +106,29 @@ Login with mock users:
 - Single flat entity `VendorRequests` using `cuid` (UUID key) and `managed` (audit fields)
 - `VendorStatus` enum type: `NEW`, `APPROVED`, `REJECTED`, `ADMIN_REVIEW`
 
+---
+
 ### 2. OData Service
 - Single `VendorService` exposing `VendorRequests` as an OData v4 projection
 - Computed field `statusCriticality` (integer) drives colored status badges in the UI
 - Service path set via `@path: 'vendor-service'`
+
+---
 
 ### 3. Fiori Elements UI
 - Fiori Elements app created via SAP Fiori Application Generator
 - List Report with filter bar (`@UI.SelectionFields`), table columns (`@UI.LineItem`), and status criticality coloring
 - Object Page with four sections via `@UI.FieldGroup` + `@UI.Facets`: Vendor Info, Contact Info, Tax & Registration, Review Info
 
+---
+
 ### 4. Approve / Reject Actions
 - Two bound CAP actions: `approveRequest` and `rejectRequest`, each taking a `comment` parameter
 - Actions return the updated entity, but Fiori Elements does not auto-refresh the Object Page — `@Common.SideEffects` with `TargetEntities: [{ $NavigationPropertyPath: '' }]` is required on each action to trigger a re-read of the current entity after execution
 
+---
 
-### 4. Mock Authentication and Role-Based Authorization
+### 5. Mock Authentication and Role-Based Authorization
 - Mock users defined under `[development]` profile in `package.json` — only active during `cds watch`, ignored in production
 - `@requires: 'authenticated-user'` on the service forces login when the app loads
 - `@restrict: [{ grant: 'INVOKE', to: 'VendorReviewer' }]` on actions — server-side enforcement
@@ -129,7 +136,9 @@ Login with mock users:
 - `@Core.OperationAvailable: isReviewer` on actions — disables Approve/Reject buttons for non-reviewers
 - `@Capabilities.DeleteRestrictions: { Deletable: isReviewer }` — disables Delete for non-reviewers
 
-### 7. Standalone App Router
+---
+
+### 6. Standalone App Router
 - Added via `cds add approuter` — generates `app/router/` with `xs-app.json`, `default-env.json`, `package.json`
 - App Router runs on port `5001` (configured via `PORT=5001` in start script)
 - **When IAS is added:** `authenticationMethod` changes to `route`, `authenticationType` per route changes to `ias`, and `forwardAuthToken` becomes `true`
@@ -255,6 +264,7 @@ POLICY "VendorReviewer_CA" {
   ASSIGN ROLE "VendorReviewer" WHERE country = 'CA';
 }
 ```
+---
 
 ### 11. ASSIGN ROLE vs GRANT — When to Use Which
 
@@ -294,6 +304,8 @@ POLICY "VendorReviewer_US" {
 | Instance filtering | Via `WHERE` on ASSIGN | Via `WHERE` on GRANT |
 | Closest analogy | XSUAA role collections | Database ACLs |
 | When to prefer | CAP-centric apps, UI needs role info | AMS as sole auth layer, multi-service policies |
+
+---
 
 ### 12. Testing Authorization in BTP
 
@@ -366,6 +378,7 @@ override: {
 }
 ```
 
+---
 
 ## Key Learnings
 
