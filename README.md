@@ -21,6 +21,7 @@ A hands-on project for learning SAP CAP development with IAS + AMS authorization
 - [What This Project Does](#what-this-project-does)
 - [Project Structure](#project-structure)
 - [Running Locally](#running-locally)
+- [MCP Servers for AI-Assisted Development](#mcp-servers-for-ai-assisted-development)
 - [What Was Built — Step by Step](#what-was-built--step-by-step)
   - [1. CAP Project Scaffold](#1-cap-project-scaffold)
   - [2. OData Service](#2-odata-service)
@@ -96,6 +97,85 @@ Login with mock users:
 |---|---|---|
 | alice | alice | VendorRequester |
 | bob | bob | VendorReviewer |
+
+---
+
+## MCP Servers for AI-Assisted Development
+
+Add these development tools to your AI coding client for CAP, SAP Fiori Elements, and SAPUI5 work:
+
+| Server | npm package | Use in this project |
+|---|---|---|
+| CAP | `@cap-js/mcp-server` | Inspect CDS models and search CAP documentation |
+| Fiori | `@sap-ux/fiori-mcp-server` | Assist with Fiori Elements app configuration and annotations |
+| UI5 | `@ui5/mcp-server` | Retrieve UI5 guidelines/API references and validate frontend code |
+
+These servers run through `npx` using stdio. They are coding tools; adding them does not expose the application's OData service as MCP or require adding runtime dependencies to `package.json`.
+
+### Prerequisites
+
+- A Node.js LTS release supported by all three server packages, with npm and `npx` on your PATH. Check each server's linked documentation for current requirements.
+- An MCP-capable client such as Claude Code or VS Code with GitHub Copilot.
+- Internet access for initial npm downloads and documentation retrieval. Run `npm ci` in this repository before using project inspection tools.
+
+### Claude Code
+
+Run from the repository root to register all three servers in project scope (`.mcp.json`):
+
+```bash
+# CAP
+claude mcp add --transport stdio --scope project cds-mcp -- npx -y @cap-js/mcp-server
+
+# SAP Fiori
+claude mcp add --transport stdio --scope project fiori-mcp -- npx -y @sap-ux/fiori-mcp-server fiori-mcp
+
+# SAPUI5
+claude mcp add --transport stdio --scope project ui5-mcp -- npx -y @ui5/mcp-server
+```
+
+Alternatively, merge the following into `.mcp.json` at the repository root. Use either the CLI commands or this configuration:
+
+```json
+{
+  "mcpServers": {
+    "cds-mcp": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@cap-js/mcp-server"]
+    },
+    "fiori-mcp": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@sap-ux/fiori-mcp-server", "fiori-mcp"]
+    },
+    "ui5-mcp": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@ui5/mcp-server"]
+    }
+  }
+}
+```
+
+The unversioned package names above are convenient for initial setup. For a shared setup, pin each package to a tested version using `package-name@x.y.z`; `npx` tools are not pinned by this project's `package-lock.json`.
+
+Restart Claude Code after changing configuration, approve the project servers when prompted, and use `/mcp` to inspect connection status and available tools. Project instructions are in [`CLAUDE.md`](CLAUDE.md).
+
+### VS Code / GitHub Copilot
+
+Create or update `.vscode/mcp.json` with the same server entries shown above, but use **`"servers"`** as the top-level key instead of `"mcpServers"`. Keep each server's `type`, `command`, and `args` unchanged. Start the servers using **MCP: List Servers** in the Command Palette and enable their tools in Copilot's agent mode. This repository ignores `.vscode/`, so that configuration stays local.
+
+### Verify the setup
+
+Open this repository as the working project and try prompts such as:
+
+- “Use CAP MCP to inspect VendorService and explain the VendorRequests access restrictions.”
+- “Use Fiori MCP to explain how the Approve and Reject actions are configured in this app.”
+- “Use UI5 MCP to retrieve UI5 guidelines and inspect `app/vendor-requests`.”
+
+Check that the client actually invokes the relevant MCP tools. If startup fails, inspect the client's server logs and verify Node.js/npm availability and package download access.
+
+Official setup and tool references: [CAP MCP server](https://github.com/cap-js/mcp-server#setup), [SAP Fiori MCP server](https://github.com/SAP/open-ux-tools/blob/main/packages/fiori-mcp-server/README.md#setup), and [UI5 MCP server](https://github.com/UI5/mcp-server#setup).
 
 ---
 
